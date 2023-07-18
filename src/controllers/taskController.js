@@ -168,7 +168,7 @@ export const updateTask = async (req, res) => {
         res.status(500).json({ error: "Error sending email." });
       } else {
         console.log(`Email sent to ${data.response}`);
-        res.status(201).json({ message: "Task created successfully!" });
+        res.status(201).json({ message: "Task updated successfully!" });
       }
     });
 
