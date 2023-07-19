@@ -69,12 +69,14 @@ export const createTask = async (req, res) => {
     let mailOptions = {
       from: email,
       to: assignedToEmail,
-      subject: "You have been assigned a new task from TaskMinder App",
-      html: `<h2>Task Details</h2>
-        <p>Title: ${title}</p>
-        <p>Description: ${description}</p>
-        <p>Priority: ${priority}</p>
-        <p>Status: ${status}</p>`,
+      subject: "You've just received a new task through the TaskMinder App!",
+      html: `<h2>Here is the Task details</h2>
+         <p>Title: ${title}</p>
+         <p>Description: ${description}</p>
+         <p>Priority: ${priority}</p>
+         <p>Click the link: <a href="https://yellow-dune-0686bdb0f.3.azurestaticapps.net/">Visit TaskMinder</a></p>  
+         `,
+    
     };
     transporter.sendMail(mailOptions, (err, data) => {
       if (err) {
@@ -160,7 +162,7 @@ export const updateTask = async (req, res) => {
          <p>Title: ${title}</p>
          <p>Description: ${description}</p>
          <p>Priority: ${priority}</p>
-         <p><a href="https://yellow-dune-0686bdb0f.3.azurestaticapps.net/">Visit TaskMinder</a></p>  
+         <p>Click the link <a href="https://yellow-dune-0686bdb0f.3.azurestaticapps.net/">Visit TaskMinder</a></p>  
          `,
     };
     transporter.sendMail(mailOptions, (err, data) => {
