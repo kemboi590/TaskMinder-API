@@ -1,7 +1,6 @@
 import sql from "mssql";
 import config from "./../db/config.js";
 
-
 // get all comments
 export const getAllComments = async (req, res) => {
   try {
@@ -11,11 +10,8 @@ export const getAllComments = async (req, res) => {
       .request()
       .input("id", sql.Int, id)
       .query("GetCommentDetails @taskID = @id");
-    if (result.recordset.length === 0) {
-      res.status(404).json({ message: "No comments found!" });
-    } else {
-      res.status(200).json(result.recordset);
-    }
+
+    res.status(200).json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
