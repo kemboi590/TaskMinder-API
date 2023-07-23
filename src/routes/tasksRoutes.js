@@ -6,7 +6,7 @@ import {
   deleteTask,
 } from "./../controllers/taskController.js";
 
-import { loginRequired } from "../controllers/userController.js";
+import { loginRequired } from "../controllers/userController.js"; 
 
 const tasks = (app) => {
   app
