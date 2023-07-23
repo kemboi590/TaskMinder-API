@@ -1,9 +1,4 @@
-import {
-  getAllComments,
-  createComment,
-  updateComment,
-  deleteComment,
-} from "./../controllers/commentController.js";
+import { getAllComments, createComment, updateComment, deleteComment } from "./../controllers/commentController.js";
 
 import { loginRequired } from "./../controllers/userController.js";
 

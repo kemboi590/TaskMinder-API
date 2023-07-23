@@ -4,13 +4,12 @@ import config from "./../db/config.js";
 // get all notifications
 export const getUserNotifications = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { user_id } = req.user;
     let pool = await sql.connect(config.sql);
     const result = await pool
       .request()
-      .input("id", sql.Int, id)
-      .query("GetUserNotifications @userID = @id");
-
+      .input("user_id", sql.Int, user_id)
+      .query("EXEC GetUserNotifications @userID = @user_id");
     res.json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -23,7 +22,6 @@ export const createNotification = async (req, res) => {
     const { user_id, content, timestamp } = req.body;
     let pool = await sql.connect(config.sql);
     await pool
-
       .request()
       .input("user_id", sql.Int, user_id)
       .input("content", sql.VarChar, content)

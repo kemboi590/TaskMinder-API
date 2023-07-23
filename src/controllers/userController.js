@@ -19,13 +19,7 @@ export const registerUser = async (req, res) => {
   console.log(username, email, hashedpassword);
   try {
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .input("username", sql.VarChar, username)
-      .input("email", sql.VarChar, email)
-      .query(
-        " SELECT * FROM Users WHERE username = @username OR email = @email"
-      );
+    let result = await pool.request().input("username", sql.VarChar, username).input("email", sql.VarChar, email).query(" SELECT * FROM Users WHERE username = @username OR email = @email");
     const user = result.recordset[0];
     if (user) {
       return res.status(409).json({ error: "User already exists" });
@@ -36,9 +30,7 @@ export const registerUser = async (req, res) => {
         .input("email", sql.VarChar, email)
         .input("role", sql.VarChar, role)
         .input("hashedpassword", sql.VarChar, hashedpassword)
-        .query(
-          "INSERT INTO Users (username, email, role, hashedpassword) VALUES (@username, @email, @role, @hashedpassword)"
-        );
+        .query("INSERT INTO Users (username, email, role, hashedpassword) VALUES (@username, @email, @role, @hashedpassword)");
       return res.status(201).json({ message: "User created successfully" });
     }
   } catch (error) {
@@ -51,10 +43,7 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .input("email", sql.VarChar, email)
-      .query("SELECT * FROM Users WHERE email = @email");
+    let result = await pool.request().input("email", sql.VarChar, email).query("SELECT * FROM Users WHERE email = @email");
     const user = result.recordset[0];
     console.log(user);
     if (!user) {
@@ -91,9 +80,7 @@ export const loginUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .query("SELECT user_id, username, profilePicUrl FROM Users");
+    let result = await pool.request().query("SELECT user_id, username, profilePicUrl FROM Users");
     const users = result.recordset;
     if (!users) {
       return res.status(401).json({ error: "No users found" });
@@ -111,16 +98,8 @@ export const updateProfileURL = async (req, res) => {
   const { profilePicUrl } = req.body;
   try {
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .input("profilePicUrl", sql.VarChar, profilePicUrl)
-      .input("user_id", sql.Int, user_id)
-      .query(
-        "Update users set profilePicUrl = @profilePicUrl WHERE user_id = @user_id"
-      );
-    return res
-      .status(200)
-      .json({ message: "Profile URL updated successfully" });
+    let result = await pool.request().input("profilePicUrl", sql.VarChar, profilePicUrl).input("user_id", sql.Int, user_id).query("Update users set profilePicUrl = @profilePicUrl WHERE user_id = @user_id");
+    return res.status(200).json({ message: "Profile URL updated successfully" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

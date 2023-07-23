@@ -6,10 +6,7 @@ export const getAllComments = async (req, res) => {
   try {
     const { id } = req.params;
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .input("id", sql.Int, id)
-      .query("GetCommentDetails @taskID = @id");
+    let result = await pool.request().input("id", sql.Int, id).query("GetCommentDetails @taskID = @id");
 
     res.status(200).json(result.recordset);
   } catch (error) {
@@ -30,9 +27,7 @@ export const createComment = async (req, res) => {
       .input("user_id", sql.Int, user_id)
       .input("content", sql.VarChar, content)
       .input("timestamp", sql.Date, timestamp)
-      .query(
-        "INSERT INTO Comments (task_id, user_id, content, timestamp) VALUES (@id, @user_id, @content, GetDate())"
-      );
+      .query("INSERT INTO Comments (task_id, user_id, content, timestamp) VALUES (@id, @user_id, @content, GetDate())");
     res.status(201).json({ message: "Comment created!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -51,9 +46,7 @@ export const updateComment = async (req, res) => {
       .input("id", sql.Int, id)
       .input("user_id", sql.Int, user_id)
       .input("content", sql.VarChar, content)
-      .query(
-        "UPDATE Comments SET content = @content WHERE comment_id = @id AND user_id = @user_id"
-      );
+      .query("UPDATE Comments SET content = @content WHERE comment_id = @id AND user_id = @user_id");
 
     res.status(200).json({ message: "Comment updated!" });
   } catch (error) {
@@ -71,9 +64,7 @@ export const deleteComment = async (req, res) => {
       .request()
       .input("id", sql.Int, id)
       .input("user_id", sql.Int, user_id)
-      .query(
-        "DELETE FROM Comments WHERE comment_id = @id AND user_id = @user_id"
-      );
+      .query("DELETE FROM Comments WHERE comment_id = @id AND user_id = @user_id");
 
     res.status(200).json({ message: "Comment deleted!" });
   } catch (error) {

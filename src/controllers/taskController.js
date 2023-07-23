@@ -22,15 +22,7 @@ export const createTask = async (req, res) => {
   const { email } = req.user;
 
   try {
-    const {
-      title,
-      description,
-      created_at,
-      due_date,
-      priority,
-      status,
-      assigned_to,
-    } = req.body;
+    const { title, description, created_at, due_date, priority, status, assigned_to } = req.body;
 
     // Connect to the SQL database
     let pool = await sql.connect(config.sql);
@@ -76,7 +68,6 @@ export const createTask = async (req, res) => {
          <p>Priority: ${priority}</p>
          <p>Click the link: <a href="https://yellow-dune-0686bdb0f.3.azurestaticapps.net/">Visit TaskMinder</a></p>  
          `,
-    
     };
     transporter.sendMail(mailOptions, (err, data) => {
       if (err) {
@@ -97,10 +88,7 @@ export const getSingleTask = async (req, res) => {
   try {
     const { id } = req.params;
     let pool = await sql.connect(config.sql);
-    let result = await pool
-      .request()
-      .input("id", sql.Int, id)
-      .query("EXEC GetSingleTaskDetails @taskID = @id");
+    let result = await pool.request().input("id", sql.Int, id).query("EXEC GetSingleTaskDetails @taskID = @id");
 
     res.json(result.recordset);
   } catch (error) {
@@ -113,15 +101,7 @@ export const updateTask = async (req, res) => {
   const { email } = req.user;
   try {
     const { id } = req.params;
-    const {
-      title,
-      description,
-      created_at,
-      due_date,
-      priority,
-      status,
-      assigned_to,
-    } = req.body;
+    const { title, description, created_at, due_date, priority, status, assigned_to } = req.body;
     let pool = await sql.connect(config.sql);
     await pool
       .request()
@@ -186,10 +166,7 @@ export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
     let pool = await sql.connect(config.sql);
-    await pool
-      .request()
-      .input("id", sql.Int, id)
-      .query("DELETE FROM Tasks WHERE task_id = @id");
+    await pool.request().input("id", sql.Int, id).query("DELETE FROM Tasks WHERE task_id = @id");
     res.status(200).json({ message: "Task deleted successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
