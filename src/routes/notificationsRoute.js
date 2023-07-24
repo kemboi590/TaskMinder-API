@@ -6,11 +6,12 @@ import {
 import { loginRequired } from "../controllers/userController.js";
 
 const notifications = (app) => {
+  app.route("/notifications/:id").get(loginRequired, getUserNotifications);
+
   app
-    .route("/notifications/:id")
-    .get(loginRequired, getUserNotifications)
+    .route("/notifications")
+    .post(loginRequired, createNotification)
     .delete(loginRequired, deleteNotification);
-  app.route("/notifications").post(loginRequired, createNotification);
 };
 
 export default notifications;
