@@ -46,7 +46,7 @@ export const deleteNotification = async (req, res) => {
       .input("user_id", sql.Int, user_id)
       .input("notification_id", sql.Int, notification_id)
       .query(
-        "DELETE FROM Notifications WHERE notification_id = @notification_id && user_id = @user_id"
+        "DELETE FROM Notifications WHERE notification_id = @notification_id AND user_id = @user_id"
       );
     res.json({ message: "Notification deleted!" });
   } catch (error) {
