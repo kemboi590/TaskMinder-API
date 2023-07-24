@@ -37,13 +37,17 @@ export const createNotification = async (req, res) => {
 
 // delete a notification
 export const deleteNotification = async (req, res) => {
+  const { user_id } = req.user;
   try {
     const { notification_id } = req.params;
     let pool = await sql.connect(config.sql);
     await pool
       .request()
+      .input("user_id", sql.Int, user_id)
       .input("notification_id", sql.Int, notification_id)
-      .query("DELETE FROM Notifications WHERE notification_id = @notification_id");
+      .query(
+        "DELETE FROM Notifications WHERE notification_id = @notification_id && user_id = @user_id"
+      );
     res.json({ message: "Notification deleted!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
