@@ -38,7 +38,7 @@ export const createNotification = async (req, res) => {
 // delete a notification
 export const deleteNotification = async (req, res) => {
   try {
-    const { notification_id } = req.body;
+    const { notification_id } = req.params;
     let pool = await sql.connect(config.sql);
     await pool
       .request()
